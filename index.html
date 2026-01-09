@@ -87,6 +87,8 @@
   }
   button { background:#333; color:#fff; font-weight:bold; cursor:pointer; }
 
+  .success-message { text-align:center; color:green; font-weight:bold; display:none; }
+
   /* Skirting */
   .skirting {
     height: 30px;
@@ -116,7 +118,7 @@
 </header>
 
 <div class="light-fixture">
-  <img src="light.png" alt="Light Fixture" style="width:50px;">
+  <img src="light-fixture.png" alt="Light Fixture" style="width:50px;">
 </div>
 
 <!-- Slider Frame -->
@@ -153,7 +155,7 @@
     <textarea name="message" rows="4" placeholder="Message" required></textarea>
     <button type="submit">Book Consultation</button>
   </form>
-  <p class="success-message" id="success-message" style="display:none;">Thank you! Your request has been sent.</p>
+  <p class="success-message" id="success-message">Thank you! Your request has been sent.</p>
 </div>
 
 <div class="skirting"></div>
@@ -193,6 +195,29 @@ setInterval(()=>{
   currentIndex = (currentIndex + 1) % slideItems.length;
   showSlide(currentIndex);
 }, 5000);
+</script>
+
+<!-- EmailJS Integration -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("sTUCghTK4EZ9dKxsF"); // replace with your EmailJS public key
+})();
+
+const form = document.getElementById('contact-form');
+const successMessage = document.getElementById('success-message');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault(); // prevent default form submission
+  emailjs.sendForm('service_rv1873k', 'template_85u27p2', this)
+    .then(function() {
+      form.reset(); // clear form fields
+      successMessage.style.display = 'block'; // show thank you
+    }, function(error) {
+      alert('Oops! Something went wrong. Please try again.');
+      console.log(error);
+    });
+});
 </script>
 
 </body>
