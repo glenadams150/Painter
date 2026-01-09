@@ -209,14 +209,24 @@ const form = document.getElementById('contact-form');
 const successMessage = document.getElementById('success-message');
 
 form.addEventListener('submit', function(e) {
-  e.preventDefault(); // prevent default form submission
-  emailjs.sendForm('service_rv1873k', 'template_85u27p2', this)
-    .then(function() {
-      form.reset(); // clear form fields
-      successMessage.style.display = 'block'; // show thank you
-    }, function(error) {
-      alert('Oops! Something went wrong. Please try again.');
+  e.preventDefault();
+
+  const templateParams = {
+    name: form.name.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    title: form.title.value,
+    message: form.message.value
+  };
+
+  emailjs.send('service_rv1873k', 'template_85u27p2', templateParams)
+    .then(() => {
+      form.reset();
+      successMessage.style.display = 'block';
+    })
+    .catch(error => {
       console.log(error);
+      alert('Something went wrong.');
     });
 });
 </script>
